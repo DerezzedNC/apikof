@@ -1,0 +1,876 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+.combat-arena {
+  font-family: "Press Start 2P", monospace;
+  background: linear-gradient(180deg, #1a1a1a 0%, #330000 50%, #1a1a1a 100%);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.stage-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 30% 40%, rgba(255, 0, 0, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 20%, rgba(255, 0, 0, 0.05) 0%, transparent 70%),
+    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.9) 100%);
+  z-index: 1;
+}
+
+.stage-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 80%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+  animation: background-pulse 4s ease-in-out infinite;
+}
+
+@keyframes background-pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.stage-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.8) 100%);
+  border-top: 2px solid #ff0000;
+  z-index: 2;
+}
+
+.fighter {
+  position: absolute;
+  bottom: 100px;
+  width: 220px;
+  height: 260px;
+  transition: all 0.3s ease;
+  z-index: 10;
+  background: transparent;
+  border: none;
+}
+
+.fighter.entering {
+  animation: character-enter 0.5s ease-out;
+}
+
+@keyframes character-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.fighter.moving {
+  transform: scale(1.1);
+}
+
+.fighter.attacking {
+  animation: attack-animation 0.6s ease-out;
+}
+
+@keyframes attack-animation {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.2) rotate(-5deg);
+  }
+  50% {
+    transform: scale(1.3) rotate(5deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(-2deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes character-idle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes victory-pose {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(2deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(-2deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(1deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes energy-glow {
+  0%, 100% {
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
+  }
+  50% {
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 15px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 25px rgba(255, 0, 0, 0.4));
+  }
+}
+
+@keyframes power-up {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: brightness(1.3) saturate(1.5);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes special-attack {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
+  25% {
+    transform: scale(1.2) rotate(-5deg);
+    filter: brightness(1.5) saturate(2);
+  }
+  50% {
+    transform: scale(1.4) rotate(5deg);
+    filter: brightness(2) saturate(2.5);
+  }
+  75% {
+    transform: scale(1.2) rotate(-2deg);
+    filter: brightness(1.5) saturate(2);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
+}
+
+.fighter-sprite {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  box-shadow: none;
+  padding: 0;
+  position: relative;
+}
+
+.fighter-sprite.player-b {
+  background: transparent;
+  box-shadow: none;
+}
+
+.fighter-image.player-b {
+  transform: scaleX(-1);
+}
+
+/* Asegurar que el personaje de la derecha mire hacia la izquierda */
+.fighter.player-b .fighter-image {
+  transform: scaleX(-1) !important;
+}
+
+/* Asegurar que el personaje de la izquierda mire hacia la derecha */
+.fighter.player-a .fighter-image {
+  transform: scaleX(1) !important;
+}
+
+.fighter-image {
+  width: 200px;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 0;
+  margin-bottom: 0;
+  border: none;
+  background: transparent;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
+  animation: character-idle 2s ease-in-out infinite;
+}
+
+.fighter-image.attacking {
+  animation: attack-animation 0.6s ease-out;
+}
+
+.fighter-image.victory {
+  animation: victory-pose 1s ease-in-out infinite;
+}
+
+.fighter-image.energy {
+  animation: energy-glow 1.5s ease-in-out infinite;
+}
+
+.fighter-image.power-up {
+  animation: power-up 0.8s ease-in-out;
+}
+
+.fighter-image.special-attack {
+  animation: special-attack 1.2s ease-in-out;
+}
+
+.fighter-image.victory-celebration {
+  animation: victory-celebration 1s ease-in-out infinite;
+}
+
+/* Mantener la orientación correcta durante las animaciones */
+.fighter.player-a .fighter-image.attacking {
+  animation: attack-animation 0.6s ease-out;
+  transform: scaleX(1) !important;
+}
+
+.fighter.player-b .fighter-image.attacking {
+  animation: attack-animation 0.6s ease-out;
+  transform: scaleX(-1) !important;
+}
+
+/* Mantener orientación en todas las animaciones */
+.fighter.player-a .fighter-image {
+  transform: scaleX(1) !important;
+}
+
+.fighter.player-b .fighter-image {
+  transform: scaleX(-1) !important;
+}
+
+.fighter-stats {
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  text-align: center;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 2px solid #ffd700;
+  white-space: nowrap;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.health-bar-container {
+  position: absolute;
+  top: 20px;
+  width: 300px;
+  height: 30px;
+  z-index: 20;
+}
+
+.health-bar-container.player-a {
+  left: 20px;
+}
+
+.health-bar-container.player-b {
+  right: 20px;
+}
+
+.health-bar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #222, #333);
+  border: 3px solid #ffd700;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.health-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  animation: health-shine 2s ease-in-out infinite;
+}
+
+@keyframes health-shine {
+  0%, 100% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+}
+
+.health-fill {
+  height: 100%;
+  transition: width 0.8s ease-out, background-color 0.3s ease;
+  border-radius: 12px;
+}
+
+.health-fill.high {
+  background: linear-gradient(90deg, #00ff00, #44ff44);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.health-fill.medium {
+  background: linear-gradient(90deg, #ffff00, #ffaa00);
+  box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+}
+
+.health-fill.low {
+  background: linear-gradient(90deg, #ff4400, #ff0000);
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+  animation: health-warning 0.5s ease-in-out infinite;
+}
+
+@keyframes health-warning {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.health-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+.player-name {
+  position: absolute;
+  top: -25px;
+  left: 0;
+  color: #ffd700;
+  font-size: 12px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.damage-number {
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff0000;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 30;
+  animation: damage-float 1.5s ease-out forwards;
+}
+
+.hit-effect {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 25;
+  animation: hit-flash 0.3s ease-out forwards;
+}
+
+.screen-shake {
+  animation: screen-shake 0.2s ease-out;
+}
+
+@keyframes damage-float {
+  0% {
+    opacity: 1;
+    transform: scale(0.5) translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) translateY(-30px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1) translateY(-60px);
+  }
+}
+
+@keyframes hit-flash {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.5) saturate(1.5);
+  }
+}
+
+@keyframes screen-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+.combat-ui {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  text-align: center;
+}
+
+.combat-ui-new {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 20px;
+  gap: 20px;
+}
+
+.combat-ui-simple {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  text-align: center;
+}
+
+.team-info-panel {
+  flex: 1;
+  max-width: 200px;
+}
+
+.center-panel {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-info {
+  text-align: center;
+}
+
+.turn-button {
+  background: linear-gradient(145deg, #ff0000, #cc0000);
+  border: 4px solid #ffd700;
+  color: white;
+  padding: 20px 40px;
+  font-size: 18px;
+  font-family: "Press Start 2P", monospace;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.turn-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.turn-button:hover::before {
+  left: 100%;
+}
+
+.turn-button:hover {
+  background: linear-gradient(145deg, #ff4444, #ff0000);
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+  transform: translateY(-3px) scale(1.05);
+  animation: button-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes button-pulse {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 0, 0, 1);
+  }
+}
+
+.turn-button:active {
+  transform: translateY(0);
+}
+
+.turn-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.controls-info {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  padding: 15px;
+  color: #ffd700;
+  font-size: 8px;
+  margin-bottom: 20px;
+}
+
+.battle-log {
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  padding: 15px;
+  width: 400px;
+  height: 150px;
+  overflow-y: auto;
+  color: white;
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.log-entry {
+  margin-bottom: 5px;
+  animation: log-entry-appear 0.3s ease-out;
+}
+
+.log-entry.damage {
+  color: #ff4444;
+}
+
+.log-entry.system {
+  color: #ffd700;
+}
+
+@keyframes log-entry-appear {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.winner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.95) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: winner-appear 0.5s ease-out;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes winner-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.winner-content {
+  text-align: center;
+  color: #ffd700;
+  animation: winner-pulse 2s infinite;
+}
+
+.winner-title {
+  font-size: 48px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px #ffd700;
+}
+
+.winner-subtitle {
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+@keyframes winner-pulse {
+  0%,
+  100% {
+    text-shadow: 0 0 20px #ffd700;
+  }
+  50% {
+    text-shadow: 0 0 40px #ffd700, 0 0 60px #ffd700;
+  }
+}
+
+@keyframes victory-celebration {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(2deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(-2deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(1deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.restart-button {
+  background: linear-gradient(145deg, #ffd700, #b8860b);
+  border: 3px solid #ff0000;
+  color: #000;
+  padding: 15px 30px;
+  font-size: 12px;
+  font-family: "Press Start 2P", monospace;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.restart-button:hover {
+  background: linear-gradient(145deg, #ffed4e, #ffd700);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .health-bar-container {
+    width: 200px;
+    height: 25px;
+  }
+
+  .fighter {
+    width: 140px;
+    height: 170px;
+  }
+
+  .fighter-sprite {
+    font-size: 8px;
+  }
+
+  .fighter-image {
+    width: 120px;
+    height: 135px;
+  }
+
+  .fighter-stats {
+    font-size: 9px;
+    bottom: -30px;
+  }
+
+  .battle-log {
+    width: 300px;
+    height: 120px;
+  }
+
+  .combat-ui-new {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .team-info-panel {
+    max-width: none;
+  }
+
+  .winner-title {
+    font-size: 32px;
+  }
+
+  .winner-subtitle {
+    font-size: 16px;
+  }
+
+  .controls-info {
+    font-size: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .health-bar-container {
+    width: 150px;
+    height: 20px;
+  }
+
+  .fighter {
+    width: 100px;
+    height: 130px;
+  }
+
+  .fighter-image {
+    width: 80px;
+    height: 90px;
+  }
+
+  .fighter-stats {
+    font-size: 7px;
+    bottom: -25px;
+  }
+
+  .battle-log {
+    width: 250px;
+    height: 100px;
+  }
+
+  .combat-ui-new {
+    padding: 0 10px;
+  }
+
+  .turn-button {
+    padding: 10px 20px;
+    font-size: 10px;
+  }
+}
+
+/* Efectos de partículas para combate */
+.combat-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  z-index: 60;
+  animation: confetti-fall 3s linear infinite;
+}
+
+/* Efectos del header */
+.header-title {
+  text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700;
+  animation: title-glow 2s ease-in-out infinite;
+}
+
+@keyframes title-glow {
+  0%, 100% {
+    text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700;
+  }
+  50% {
+    text-shadow: 0 0 15px #ffd700, 0 0 25px #ffd700, 0 0 35px #ffd700, 0 0 45px #ffd700;
+  }
+}
+
+.confetti.red {
+  background: #ff0000;
+}
+
+.confetti.blue {
+  background: #0000ff;
+}
+
+.confetti.green {
+  background: #00ff00;
+}
+
+.confetti.yellow {
+  background: #ffff00;
+}
+
+.confetti.purple {
+  background: #800080;
+}
+
+.combat-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(255, 215, 0, 0.6);
+  border-radius: 50%;
+  animation: combat-particle-float 3s infinite linear;
+}
+
+@keyframes combat-particle-float {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10px) translateX(20px);
+    opacity: 0;
+  }
+}

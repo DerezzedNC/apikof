@@ -1,0 +1,186 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --kof-red: #ff0000;
+  --kof-gold: #ffd700;
+  --kof-dark: #1a1a1a;
+  --kof-dark-red: #330000;
+  --arcade-glow: 0 0 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Orbitron", monospace;
+  background: linear-gradient(135deg, var(--kof-dark) 0%, var(--kof-dark-red) 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.arcade-font {
+  font-family: "Press Start 2P", monospace;
+}
+
+.glow-red {
+  box-shadow: var(--arcade-glow) var(--kof-red);
+}
+
+.glow-gold {
+  box-shadow: var(--arcade-glow) var(--kof-gold);
+}
+
+.text-glow-red {
+  text-shadow: 0 0 10px var(--kof-red), 0 0 20px var(--kof-red);
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 10px var(--kof-gold), 0 0 20px var(--kof-gold);
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px var(--kof-red);
+  }
+  50% {
+    box-shadow: 0 0 25px var(--kof-red), 0 0 35px var(--kof-red);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--kof-red);
+  border-radius: 50%;
+  animation: particle-float 4s infinite linear;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.battle-damage {
+  animation: damage-pop 0.5s ease-out;
+}
+
+@keyframes damage-pop {
+  0% {
+    transform: scale(0) rotate(-10deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.health-bar {
+  transition: width 0.8s ease-out;
+}
+
+.arcade-button {
+  position: relative;
+  background: linear-gradient(145deg, #ff4444, #cc0000);
+  border: 3px solid var(--kof-gold);
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.arcade-button:hover {
+  background: linear-gradient(145deg, #ff6666, #ff0000);
+  box-shadow: 0 0 20px var(--kof-red), inset 0 0 20px rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.arcade-button:active {
+  transform: translateY(0px);
+  box-shadow: 0 0 10px var(--kof-red);
+}
+
+.character-card {
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  border: 2px solid var(--kof-gold);
+  transition: all 0.3s ease;
+}
+
+.character-card:hover {
+  border-color: var(--kof-red);
+  box-shadow: 0 0 15px var(--kof-red);
+  transform: scale(1.05);
+}
+
+.character-card.selected {
+  border-color: var(--kof-gold);
+  box-shadow: 0 0 25px var(--kof-gold);
+  background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+}
+
+.selected-team-a {
+  border-color: #ff0000 !important;
+  box-shadow: 0 0 25px #ff0000 !important;
+  background: linear-gradient(145deg, #3a1a1a, #2a0a0a) !important;
+}
+
+.selected-team-b {
+  border-color: #0000ff !important;
+  box-shadow: 0 0 25px #0000ff !important;
+  background: linear-gradient(145deg, #1a1a3a, #0a0a2a) !important;
+}
+
+.text-glow-blue {
+  text-shadow: 0 0 10px #0000ff, 0 0 20px #0000ff;
+}
