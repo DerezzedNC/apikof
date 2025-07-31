@@ -77,7 +77,8 @@ export default function Dashboard({ user, onStartBattle, onLogout }: DashboardPr
           <button
             onClick={() => {
               setSelectedMode("1v1")
-              setSelectedTeam([])
+              setSelectedTeamA([])
+              setSelectedTeamB([])
             }}
             className={`arcade-button px-6 py-4 text-lg arcade-font rounded-lg flex-1 ${
               selectedMode === "1v1" ? "glow-red" : ""
@@ -88,7 +89,8 @@ export default function Dashboard({ user, onStartBattle, onLogout }: DashboardPr
           <button
             onClick={() => {
               setSelectedMode("3v3")
-              setSelectedTeam([])
+              setSelectedTeamA([])
+              setSelectedTeamB([])
             }}
             className={`arcade-button px-6 py-4 text-lg arcade-font rounded-lg flex-1 ${
               selectedMode === "3v3" ? "glow-red" : ""
