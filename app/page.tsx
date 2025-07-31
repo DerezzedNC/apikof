@@ -66,7 +66,7 @@ export default function KOFApp() {
         />
       )}
 
-      {currentView === "battle" && (
+      {currentView === "battle" && battleMode && (
         <CombatArena 
           playerA={selectedTeams.teamA[0]} 
           playerB={selectedTeams.teamB[0]} 
