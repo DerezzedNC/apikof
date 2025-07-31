@@ -48,7 +48,7 @@ npm run dev
 ### Render
 1. Conecta tu repositorio a Render
 2. Configura como servicio web
-3. Build Command: `npm install && npm run build`
+3. Build Command: `npm install --legacy-peer-deps && npm run build`
 4. Start Command: `npm start`
 
 ### Variables de entorno
